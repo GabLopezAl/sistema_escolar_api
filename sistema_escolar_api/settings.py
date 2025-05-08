@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'sistema_escolar_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_escolar_db',
+        'NAME': 'sistema_escolar',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
