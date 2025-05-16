@@ -47,5 +47,8 @@ urlpatterns = [
         path('alumnos-edit/', users.AlumnoViewEdit.as_view()),
 
     # Edit Admin
-        path('maestros-edit/', users.MaestroViewEdit.as_view())
+        path('maestros-edit/', users.MaestroViewEdit.as_view()),
+
+    #Obtener usuarios totales por eol
+        path('usuarios-totales/', users.TotalUsuariosPorRolView.as_view()),
 ]

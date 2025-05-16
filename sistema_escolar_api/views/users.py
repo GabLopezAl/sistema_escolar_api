@@ -256,8 +256,6 @@ class MaestroView(generics.CreateAPIView):
 class AdminViewEdit(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,) # Verifica el token de incio de sesión
 
-    #def get(self, request, *args, **kwargs):
-
     def put(self, request, *args, **kwargs):
         admin = get_object_or_404(Administradores, id=request.data["id"])
         admin.clave_admin = request.data["clave_admin"]  
@@ -346,3 +344,17 @@ class MaestroViewEdit(generics.CreateAPIView):
             return Response({"details":"Maestro eliminado"},200)
         except Exception as e:
             return Response({"details":"Algo ocurrió al eliminar"},400)
+
+class TotalUsuariosPorRolView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        total_admins = Administradores.objects.filter(user__is_active=1).count()
+        total_maestros = Maestros.objects.filter(user__is_active=1).count()
+        total_alumnos = Alumnos.objects.filter(user__is_active=1).count()
+
+        return Response({
+            "total_administradores": total_admins,
+            "total_maestros": total_maestros,
+            "total_alumnos": total_alumnos
+        }, status=200)
