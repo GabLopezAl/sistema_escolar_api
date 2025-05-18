@@ -65,3 +65,28 @@ class Maestros(models.Model):
 
     def __str__(self):
         return "Perfil del maestro " + self.first_name + " " + self.last_name
+
+
+class Eventos(models.Model):
+    TIPO_EVENTO_CHOICES = [
+        ('Conferencia', 'Conferencia'),
+        ('Taller', 'Taller'),
+        ('Seminario', 'Seminario'),
+        ('Concurso', 'Concurso'),
+    ]
+    id = models.BigAutoField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    tipoE = models.CharField("Tipo de evento", max_length=50, choices=TIPO_EVENTO_CHOICES)
+    fecha_realizacion = models.DateField()
+    horaInicio = models.TimeField()
+    horaFin = models.TimeField()
+    lugar = models.CharField(max_length=150)
+    opsc = models.CharField("Publico Objetivo", max_length=255,default="")
+    programaEducativo = models.CharField(max_length=100, blank=True, null=True)
+    responsable = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=300)
+    cupoMaximo = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.nombre
+

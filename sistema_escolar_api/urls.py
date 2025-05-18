@@ -51,4 +51,7 @@ urlpatterns = [
 
     #Obtener usuarios totales por eol
         path('usuarios-totales/', users.TotalUsuariosPorRolView.as_view()),
+
+    # Crear evento
+        path('evento/', users.EventoView.as_view()),
 ]

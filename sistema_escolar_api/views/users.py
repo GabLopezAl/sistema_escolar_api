@@ -30,6 +30,22 @@ import string
 import random
 import json
 
+class EventoView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)  # Requiere autenticación
+
+    def get(self, request, *args, **kwargs):
+        evento = get_object_or_404(Eventos, id=request.GET.get("id"))
+        data = EventoSerializer(evento).data
+        return Response(data, 200)
+
+    @transaction.atomic
+    def post(self, request, *args, **kwargs):
+        serializer = EventoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"evento_creado_id": serializer.data["id"]}, status=201)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class AdminAll(generics.CreateAPIView):
     # Esta función es esencial para todo donde se requiera autorización de incio de sesión (token)
     permission_classes = (permissions.IsAuthenticated,)
