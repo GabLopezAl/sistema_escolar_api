@@ -54,4 +54,7 @@ urlpatterns = [
 
     # Crear evento
         path('evento/', users.EventoView.as_view()),
+
+    #Event Data
+        path('lista-eventos/', users.EventoAll.as_view()),
 ]

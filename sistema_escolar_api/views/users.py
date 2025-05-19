@@ -30,6 +30,29 @@ import string
 import random
 import json
 
+class EventoAll(generics.CreateAPIView):
+    # # Esta función es esencial para todo donde se requiera autorización de incio de sesión (token)
+    # permission_classes = (permissions.IsAuthenticated,)
+    # def get(self, request, *args, **kwargs):
+    #     evento = Eventos.objects.order_by("id")
+    #     lista = EventoSerializer(evento, many=True).data
+
+    #     return Response(lista, 200)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        rol = request.query_params.get('rol', '')
+
+        if rol == 'maestro':
+            eventos = Eventos.objects.filter(publicoObjetivo__in=['Profesores', 'Público general', 'Profesores, Público general', 'Estudiantes, Profesores', 'Estudiantes, Profesores, Público general']).order_by("id")
+        elif rol == 'alumno':
+            eventos = Eventos.objects.filter(publicoObjetivo__in=['Estudiantes', 'Público general', 'Estudiantes, Público general', 'Estudiantes, Profesores', 'Estudiantes, Profesores, Público general']).order_by("id")
+        else:
+            eventos = Eventos.objects.order_by("id")
+
+        lista = EventoSerializer(eventos, many=True).data
+        return Response(lista, 200)
+
 class EventoView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)  # Requiere autenticación
 
