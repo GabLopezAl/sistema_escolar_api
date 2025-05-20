@@ -68,6 +68,37 @@ class EventoView(generics.CreateAPIView):
             serializer.save()
             return Response({"evento_creado_id": serializer.data["id"]}, status=201)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class EventoViewEdit(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,) 
+
+    #def get(self, request, *args, **kwargs):
+
+    def put(self, request, *args, **kwargs):
+        evento = get_object_or_404(Eventos, id=request.data["id"])
+        evento.nombre = request.data["nombre"]
+        evento.tipoEvento = request.data["tipoEvento"]  
+        evento.fecha_realizacion = request.data["fecha_realizacion"]
+        evento.horaInicio = request.data["horaInicio"]
+        evento.horaFin = request.data["horaFin"]
+        evento.lugar = request.data["lugar"]
+        evento.publicoObjetivo = request.data["publicoObjetivo"]
+        evento.programaEducativo = request.data["programaEducativo"]
+        evento.responsable = request.data["responsable"]
+        evento.descripcion = request.data["descripcion"]
+        evento.cupoMaximo = request.data["cupoMaximo"]
+        evento.save()
+        user = EventoSerializer(evento, many=False).data
+
+        return Response(user,200)
+
+    # def delete(self, request, *args, **kwargs):
+    #     maestro = get_object_or_404(Maestros, id=request.GET.get("id"))
+    #     try:    
+    #         maestro.user.delete()
+    #         return Response({"details":"Maestro eliminado"},200)
+    #     except Exception as e:
+    #         return Response({"details":"Algo ocurrió al eliminar"},400)
 
 class AdminAll(generics.CreateAPIView):
     # Esta función es esencial para todo donde se requiera autorización de incio de sesión (token)
