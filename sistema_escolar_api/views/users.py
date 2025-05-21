@@ -89,19 +89,6 @@ class EventoViewEdit(generics.CreateAPIView):
         evento.responsable = request.data["responsable"]
         evento.descripcion = request.data["descripcion"]
         evento.cupoMaximo = request.data["cupoMaximo"]
-        # evento.nombre = request.get("nombre", evento.nombre)
-        # evento.tipoEvento = request.get("tipoEvento", evento.tipoEvento)
-        # evento.fecha_realizacion = request.get("fecha_realizacion", evento.fecha_realizacion)
-        # evento.horaInicio = request.get("horaInicio", evento.horaInicio)
-        # evento.horaFin = request.get("horaFin", evento.horaFin)
-        # evento.descripcion = request.get("descripcion", evento.descripcion)
-        # evento.cupoMaximo = request.get("cupoMaximo", evento.cupoMaximo)
-        # evento.lugar = request.get("lugar", evento.lugar)
-        # evento.programaEducativo = request.get("programaEducativo", evento.programaEducativo)
-        # evento.publicoObjetivo = request.get("publicoObjetivo", evento.publicoObjetivo)
-        # evento.responsable = request.get("responsable", evento.responsable)
-        # evento.descripcion = request.get("descripcion", evento.descripcion)
-        # evento.cupoMaximo = request.get("cupoMaximo", evento.cupoMaximo)
         print("ANTES:", request.data)
         evento.save()
         print("DESPUÉS:", request.data)
