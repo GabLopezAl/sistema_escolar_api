@@ -74,8 +74,10 @@ class EventoViewEdit(generics.CreateAPIView):
 
     #def get(self, request, *args, **kwargs):
 
-    def put(self, request, *args, **kwargs):
-        evento = get_object_or_404(Eventos, id=request.data["id"])
+    def put(self, request,id,*args, **kwargs):
+        print("EDITANDO EVENTO ID:", id)
+        print("DATOS RECIBIDOS:", request.data)
+        evento = get_object_or_404(Eventos, id=id)
         evento.nombre = request.data["nombre"]
         evento.tipoEvento = request.data["tipoEvento"]  
         evento.fecha_realizacion = request.data["fecha_realizacion"]
@@ -87,18 +89,34 @@ class EventoViewEdit(generics.CreateAPIView):
         evento.responsable = request.data["responsable"]
         evento.descripcion = request.data["descripcion"]
         evento.cupoMaximo = request.data["cupoMaximo"]
+        # evento.nombre = request.get("nombre", evento.nombre)
+        # evento.tipoEvento = request.get("tipoEvento", evento.tipoEvento)
+        # evento.fecha_realizacion = request.get("fecha_realizacion", evento.fecha_realizacion)
+        # evento.horaInicio = request.get("horaInicio", evento.horaInicio)
+        # evento.horaFin = request.get("horaFin", evento.horaFin)
+        # evento.descripcion = request.get("descripcion", evento.descripcion)
+        # evento.cupoMaximo = request.get("cupoMaximo", evento.cupoMaximo)
+        # evento.lugar = request.get("lugar", evento.lugar)
+        # evento.programaEducativo = request.get("programaEducativo", evento.programaEducativo)
+        # evento.publicoObjetivo = request.get("publicoObjetivo", evento.publicoObjetivo)
+        # evento.responsable = request.get("responsable", evento.responsable)
+        # evento.descripcion = request.get("descripcion", evento.descripcion)
+        # evento.cupoMaximo = request.get("cupoMaximo", evento.cupoMaximo)
+        print("ANTES:", request.data)
         evento.save()
+        print("DESPUÉS:", request.data)
+
         user = EventoSerializer(evento, many=False).data
 
         return Response(user,200)
 
-    # def delete(self, request, *args, **kwargs):
-    #     maestro = get_object_or_404(Maestros, id=request.GET.get("id"))
-    #     try:    
-    #         maestro.user.delete()
-    #         return Response({"details":"Maestro eliminado"},200)
-    #     except Exception as e:
-    #         return Response({"details":"Algo ocurrió al eliminar"},400)
+    def delete(self, request, *args, **kwargs):
+        evento = get_object_or_404(Eventos, id=request.GET.get("id"))
+        try:
+            evento.delete()
+            return Response({"mensaje": "Evento eliminado"}, status=status.HTTP_204_NO_CONTENT)
+        except Eventos.DoesNotExist:
+            return Response({"error": "Evento no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
 class AdminAll(generics.CreateAPIView):
     # Esta función es esencial para todo donde se requiera autorización de incio de sesión (token)

@@ -59,5 +59,9 @@ urlpatterns = [
         path('lista-eventos/', users.EventoAll.as_view()),
 
     # Edit event
-        path('eventos-edit/', users.EventoViewEdit.as_view()),
+        path("eventos-edit/", users.EventoViewEdit.as_view()),
+
+        path('evento-edit/<int:id>/', users.EventoViewEdit.as_view(), name="evento-edit"),
+
+
 ]
