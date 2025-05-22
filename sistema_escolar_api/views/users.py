@@ -44,9 +44,9 @@ class EventoAll(generics.CreateAPIView):
         rol = request.query_params.get('rol', '')
 
         if rol == 'maestro':
-            eventos = Eventos.objects.filter(publicoObjetivo__in=['Profesores', 'Público general', 'Profesores, Público general', 'Estudiantes, Profesores', 'Estudiantes, Profesores, Público general']).order_by("id")
+            eventos = Eventos.objects.filter(publicoObjetivo__in=['Profesores', 'Público general', 'Profesores, Público general']).order_by("id")
         elif rol == 'alumno':
-            eventos = Eventos.objects.filter(publicoObjetivo__in=['Estudiantes', 'Público general', 'Estudiantes, Público general', 'Estudiantes, Profesores', 'Estudiantes, Profesores, Público general']).order_by("id")
+            eventos = Eventos.objects.filter(publicoObjetivo__in=['Estudiantes', 'Público general', 'Estudiantes, Público general']).order_by("id")
         else:
             eventos = Eventos.objects.order_by("id")
 
@@ -74,10 +74,9 @@ class EventoViewEdit(generics.CreateAPIView):
 
     #def get(self, request, *args, **kwargs):
 
-    def put(self, request,id,*args, **kwargs):
-        print("EDITANDO EVENTO ID:", id)
+    def put(self, request,*args, **kwargs):
         print("DATOS RECIBIDOS:", request.data)
-        evento = get_object_or_404(Eventos, id=id)
+        evento = get_object_or_404(Eventos, id=request.GET.get("id"))
         evento.nombre = request.data["nombre"]
         evento.tipoEvento = request.data["tipoEvento"]  
         evento.fecha_realizacion = request.data["fecha_realizacion"]
@@ -89,9 +88,7 @@ class EventoViewEdit(generics.CreateAPIView):
         evento.responsable = request.data["responsable"]
         evento.descripcion = request.data["descripcion"]
         evento.cupoMaximo = request.data["cupoMaximo"]
-        print("ANTES:", request.data)
         evento.save()
-        print("DESPUÉS:", request.data)
 
         user = EventoSerializer(evento, many=False).data
 
